@@ -1,7 +1,11 @@
+
+
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
 let box = 32;
 let snake =[];
+let velocidade = 150;
+        
 
 snake[0] = {
     x: 8 * box,
@@ -24,6 +28,7 @@ function criarSnake(){
     for( i=0; i < snake.length; i++){
         context.fillStyle = "green";
         context.fillRect(snake[i].x, snake[i].y, box, box);
+                
     }
 
 }
@@ -43,6 +48,14 @@ function update(event){
     if(event.keyCode == 40 && direction != "up"){
         direction = "down";
     }
+    
+} 
+
+
+function drawFood(){
+    context.fillStyle = "red";
+    context.fillRect(food.x, food.y, box, box);
+    
 }
 
 function startGame(){
@@ -59,13 +72,14 @@ function startGame(){
     if(snake[0].y < 0 && direction == "up"){
         snake[0].y = 16 * box;
     }
+    
 
-function drawFood(){
-    context.fillStyle = "red";
-    context.fillRect(food.x, food.y, box, box);
-}
-
-
+    for(i=1; i < snake.length; i++){
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+            clearInterval(game);
+            alert("Game Over! :(")
+        }
+    }
     criarBG();
     criarSnake();
     drawFood();
@@ -75,6 +89,7 @@ function drawFood(){
 
     if(direction == "right"){
         snakeX += box;
+        
     }else if(direction == "left"){
         snakeX -= box;
 
@@ -86,21 +101,24 @@ function drawFood(){
 
     if(snakeX != food.x || snakeY != food.y){
         snake.pop();
+        
     }else{
         food.x = Math.floor(Math.random() * 15 + 1) * box;
         food.y = Math.floor(Math.random() * 15 +1) * box;
-    }
-
-    
-
-    
+        
+    }  
 
     let newHead = {
         x: snakeX,
         y: snakeY
+        
     }
 
     snake.unshift(newHead);
+    document.getElementById("tamanho").innerHTML = `Score: ${snake.length}`;
+    
 }
 
-let game = setInterval(startGame, 100);
+
+
+let game = setInterval(startGame, velocidade);
