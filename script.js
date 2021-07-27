@@ -61,9 +61,8 @@ function startGame(){
     }
 
 function drawFood(){
+    context.fillStyle = "red";
     context.fillRect(food.x, food.y, box, box);
-    context.fillStyle = "blue";
-
 }
 
 
@@ -85,7 +84,16 @@ function drawFood(){
         snakeY += box;
     }
 
-    snake.pop();
+    if(snakeX != food.x || snakeY != food.y){
+        snake.pop();
+    }else{
+        food.x = Math.floor(Math.random() * 15 + 1) * box;
+        food.y = Math.floor(Math.random() * 15 +1) * box;
+    }
+
+    
+
+    
 
     let newHead = {
         x: snakeX,
